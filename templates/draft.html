@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %} Draft {% endblock %}
+{% block homeactive %} active {% endblock homeactive %}
+
+{% block css %}
+{% endblock %}
+{% block body %}
+<div class="container mt-5 mb-3">
+  {% if user.is_superuser %}
+  <div class="row">
+    {% for post in posts_draft %}
+    <div class="col-lg-4 my-4">
+      <div class="card shadow" style="width: 20rem; height: 33rem;">
+        <img src="/media/{{post.image}}" class="card-img-top" alt="..." height="250px">
+        <div class="card-body">
+          <h5 class="card-title">{{post.title}} <br><small>by {{post.author}}</small></h5>
+          <p class="card-text">{{post.content| truncatechars:50}}</p>
+
+          <a href="/comments/{{post.slug}}" class="btn btn-primary">Read More</a>
+          <a href="delete_blog_post/{{post.slug}}/" class="btn btn-danger">Delete Blog</a>
+          <a href="{% url 'push_draft' post.slug %}" class="btn mt-2 btn-success btn-lg gradient-custom-3 text-body">Push</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h3>You are not allowed here!</h3>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block js %}
+<script>
+  {% if alert %}
+  alert('Your Blog is added successfully.');
+  document.location = '/';
+  {% endif %}
+</script>
+{% endblock %}
